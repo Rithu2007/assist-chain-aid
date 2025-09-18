@@ -1,8 +1,43 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
 import { Search, Heart, ShoppingCart, User, Menu } from "lucide-react";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 export const Header = () => {
+  const [savedCount, setSavedCount] = useState(3);
+  const [cartCount, setCartCount] = useState(1);
+  const { toast } = useToast();
+
+  const handleSaved = () => {
+    toast({
+      title: "Saved Items",
+      description: `You have ${savedCount} saved devices`,
+    });
+  };
+
+  const handleCart = () => {
+    toast({
+      title: "Shopping Cart",
+      description: `${cartCount} item${cartCount > 1 ? 's' : ''} in your cart`,
+    });
+  };
+
+  const handleAccount = () => {
+    toast({
+      title: "Account",
+      description: "Account management coming soon!",
+    });
+  };
+
+  const handleMenu = () => {
+    toast({
+      title: "Menu",
+      description: "Mobile menu opening...",
+    });
+  };
+
   return (
     <header className="border-b bg-card/95 backdrop-blur supports-[backdrop-filter]:bg-card/60 sticky top-0 z-50">
       <div className="container mx-auto px-4 h-16 flex items-center gap-4">
@@ -27,19 +62,29 @@ export const Header = () => {
 
         {/* Actions */}
         <div className="flex items-center gap-2">
-          <Button variant="ghost" size="sm">
+          <Button variant="ghost" size="sm" onClick={handleSaved} className="relative">
             <Heart className="w-4 h-4" />
             <span className="hidden sm:inline ml-2">Saved</span>
+            {savedCount > 0 && (
+              <Badge variant="destructive" className="absolute -top-2 -right-2 text-xs h-4 w-4 p-0 flex items-center justify-center">
+                {savedCount}
+              </Badge>
+            )}
           </Button>
-          <Button variant="ghost" size="sm">
+          <Button variant="ghost" size="sm" onClick={handleCart} className="relative">
             <ShoppingCart className="w-4 h-4" />
             <span className="hidden sm:inline ml-2">Cart</span>
+            {cartCount > 0 && (
+              <Badge variant="destructive" className="absolute -top-2 -right-2 text-xs h-4 w-4 p-0 flex items-center justify-center">
+                {cartCount}
+              </Badge>
+            )}
           </Button>
-          <Button variant="outline" size="sm">
+          <Button variant="outline" size="sm" onClick={handleAccount}>
             <User className="w-4 h-4" />
             <span className="hidden sm:inline ml-2">Account</span>
           </Button>
-          <Button variant="ghost" size="sm" className="md:hidden">
+          <Button variant="ghost" size="sm" className="md:hidden" onClick={handleMenu}>
             <Menu className="w-4 h-4" />
           </Button>
         </div>

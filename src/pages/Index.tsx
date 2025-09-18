@@ -5,6 +5,7 @@ import { Header } from "@/components/Header";
 import { TrustBadge } from "@/components/TrustBadge";
 import { DeviceCard } from "@/components/DeviceCard";
 import { CategoryCard } from "@/components/CategoryCard";
+import { useToast } from "@/hooks/use-toast";
 import { 
   Accessibility, 
   Ear, 
@@ -21,6 +22,31 @@ import hearingAids from "@/assets/hearing-aids.jpg";
 import prostheticArm from "@/assets/prosthetic-arm.jpg";
 
 const Index = () => {
+  const { toast } = useToast();
+
+  const handleBrowseDevices = () => {
+    // Scroll to featured devices section
+    const featuredSection = document.querySelector('#featured-devices');
+    if (featuredSection) {
+      featuredSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    toast({
+      title: "Browse Devices",
+      description: "Showing featured devices below",
+    });
+  };
+
+  const handleHowItWorks = () => {
+    // Scroll to how it works section
+    const howItWorksSection = document.querySelector('#how-it-works');
+    if (howItWorksSection) {
+      howItWorksSection.scrollIntoView({ behavior: 'smooth' });
+    }
+    toast({
+      title: "How It Works",
+      description: "Learn about our blockchain verification process",
+    });
+  };
   const featuredDevices = [
     {
       name: "Advanced Electric Wheelchair Model X1",
@@ -80,11 +106,11 @@ const Index = () => {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" className="text-lg px-8">
+            <Button size="lg" className="text-lg px-8" onClick={handleBrowseDevices}>
               Browse Devices
               <ArrowRight className="ml-2 w-5 h-5" />
             </Button>
-            <Button variant="outline" size="lg" className="text-lg px-8">
+            <Button variant="outline" size="lg" className="text-lg px-8" onClick={handleHowItWorks}>
               How It Works
             </Button>
           </div>
@@ -107,7 +133,7 @@ const Index = () => {
       </section>
 
       {/* Featured Devices */}
-      <section className="py-16 px-4">
+      <section id="featured-devices" className="py-16 px-4">
         <div className="container mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-foreground mb-4">Featured Devices</h2>
@@ -143,7 +169,7 @@ const Index = () => {
       </section>
 
       {/* How It Works */}
-      <section className="py-16 px-4">
+      <section id="how-it-works" className="py-16 px-4">
         <div className="container mx-auto max-w-4xl">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-foreground mb-4">How Blockchain Verification Works</h2>

@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { TrustBadge } from "./TrustBadge";
 import { Heart, Info } from "lucide-react";
+import { useState } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 interface DeviceCardProps {
   name: string;
@@ -23,6 +25,30 @@ export const DeviceCard = ({
   verificationCount, 
   category 
 }: DeviceCardProps) => {
+  const [isFavorited, setIsFavorited] = useState(false);
+  const { toast } = useToast();
+
+  const handleFavorite = () => {
+    setIsFavorited(!isFavorited);
+    toast({
+      title: isFavorited ? "Removed from favorites" : "Added to favorites",
+      description: `${name} ${isFavorited ? 'removed from' : 'added to'} your saved items`,
+    });
+  };
+
+  const handleViewDetails = () => {
+    toast({
+      title: "Device Details",
+      description: `Opening detailed view for ${name}`,
+    });
+  };
+
+  const handleInfo = () => {
+    toast({
+      title: "Device Information",
+      description: `Condition: ${condition} • ${verificationCount} blockchain verifications`,
+    });
+  };
   return (
     <Card className="overflow-hidden hover:shadow-lg transition-all duration-300 group">
       <CardHeader className="p-0">
@@ -33,8 +59,13 @@ export const DeviceCard = ({
             className="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-300"
           />
           <div className="absolute top-3 right-3">
-            <Button variant="ghost" size="sm" className="h-8 w-8 p-0 bg-white/80 hover:bg-white">
-              <Heart className="w-4 h-4" />
+            <Button 
+              variant="ghost" 
+              size="sm" 
+              className={`h-8 w-8 p-0 bg-white/80 hover:bg-white ${isFavorited ? 'text-red-500' : ''}`}
+              onClick={handleFavorite}
+            >
+              <Heart className={`w-4 h-4 ${isFavorited ? 'fill-current' : ''}`} />
             </Button>
           </div>
           <div className="absolute top-3 left-3">
@@ -73,10 +104,10 @@ export const DeviceCard = ({
       </CardContent>
       
       <CardFooter className="p-4 pt-0 gap-2">
-        <Button className="flex-1" size="sm">
+        <Button className="flex-1" size="sm" onClick={handleViewDetails}>
           View Details
         </Button>
-        <Button variant="outline" size="sm">
+        <Button variant="outline" size="sm" onClick={handleInfo}>
           <Info className="w-4 h-4" />
         </Button>
       </CardFooter>
